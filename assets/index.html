@@ -9,13 +9,18 @@ function login(){
 	jsobject.fun(name,psd);
 }
 
+function displayResult(info){
+	document.getElementById('result').innerHTML = info;
+	
+}
+
 </script>
 </head>
 <body>
 username:<input type="text" id ="name"><br/>
 password:<input type="text" id ="psd"><br/>
 <input type="button" onClick="login()" value="submit">
-
+<span id="result">result</span>
 </body>
 
 

@@ -4,6 +4,8 @@ import com.example.script.JavaScriptObject;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -13,13 +15,14 @@ public class MainActivity extends Activity {
 
 	private WebView webView;
 	private JavaScriptObject jsobject;
+	private Handler handler;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		webView = (WebView)findViewById(R.id.webView);
-		jsobject = new JavaScriptObject(this);
-		
+		handler = new WebViewUpdateHandler();
+		jsobject = new JavaScriptObject(this,handler);
 		
 		//init
 		webView.getSettings().setJavaScriptEnabled(true);
@@ -54,4 +57,25 @@ public class MainActivity extends Activity {
 		return false;
 	}
 	
+	class WebViewUpdateHandler extends Handler{
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			Bundle data = msg.getData();
+			String info = data.getString("info");
+			switch(msg.what){
+			case 1:
+				webView.loadUrl("javascript:displayResult("+info+");");
+				break;
+			default:
+				break;
+			}
+			
+			
+			super.handleMessage(msg);
+		}
+		
+	}
+	 
 }
